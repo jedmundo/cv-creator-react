@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 
-import { GetLinkInDataAction } from '../actions/GetLinkedInData.action';
+import { GetLinkInDataAction } from '../actions/login.actions';
 import './App.scss';
 
 interface Props {
@@ -42,4 +42,4 @@ class App extends React.Component<Props> {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect<Props>(mapStateToProps, mapDispatchToProps)(App);

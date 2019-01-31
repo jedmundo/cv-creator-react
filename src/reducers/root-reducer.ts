@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import getCvReducer from './getLinkedInData.reducer';
+import getCvReducer from './login.reducers';
 
 export default combineReducers({
  getCvReducer
