@@ -1,45 +1,27 @@
 import * as React from 'react';
-import { connect } from 'react-redux';
 
-import { GetLinkInDataAction } from '../actions/login.actions';
-import './App.scss';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import Home from 'src/components/Home/Home';
+import LoginPage from 'src/components/Login/Login';
+import Navigation from 'src/components/Navigation/Navigation';
+import { ROUTES } from '../constants/routes.constants';
 
-interface Props {
-  doAction: () => any;
-};
-
-const mapStateToProps = (state: any) => ({
-  ...state
-})
-
-const mapDispatchToProps = (dispatch: any) => ({
-  doAction: () => dispatch(GetLinkInDataAction())
-})
-
-class App extends React.Component<Props> {
-
-  public simpleAction = () => {
-    this.props.doAction();
-  }
+class App extends React.Component {
 
   public render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <h1 className="App-title">CV creator</h1>
-        </header>
-        <p className="App-intro">
-          Letsa goooo!
-        </p>
-        <button onClick={this.simpleAction}>Test redux action</button>
-        <pre>
-          {
-            JSON.stringify(this.props)
-          }
-        </pre>
-      </div>
+      <Router>
+        <div>
+          <Navigation />
+          <Switch >
+            {/* <Route path={ROUTES.LOGIN} component={LinkedInPopUp} /> */}
+            <Route exact path={ROUTES.HOME} component={Home} />
+            <Route path={ROUTES.LOGIN} component={LoginPage} />
+          </Switch>
+        </div>
+      </Router>
     );
   }
 }
 
-export default connect<Props>(mapStateToProps, mapDispatchToProps)(App);
+export default App;
