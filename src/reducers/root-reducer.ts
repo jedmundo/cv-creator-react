@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
-import getCvReducer from './login.reducers';
+import loginReducers from './login.reducers';
 
 export default combineReducers({
- getCvReducer
+  loginReducers
 });

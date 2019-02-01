@@ -1,5 +1,6 @@
 import { Dispatch } from 'redux';
-import { GET_LINKEDIN_DATA } from '../reducers/login.reducers';
+
+import { GET_LINKEDIN_DATA } from '../constants/login.constants';
 
 export const GetLinkInDataAction = () => (dispatch: Dispatch) => {
 	dispatch({

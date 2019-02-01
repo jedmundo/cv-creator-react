@@ -1,6 +1,5 @@
 import { Action } from 'redux';
-
-export const GET_LINKEDIN_DATA = 'GET_LINKEDIN_DATA';
+import { GET_LINKEDIN_DATA } from '../constants/login.constants';
 
 export interface GetLinkedInData extends Action {
   payload: string;
