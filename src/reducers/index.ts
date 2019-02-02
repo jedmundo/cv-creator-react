@@ -9,6 +9,6 @@ export const initialState: State = {
   todos: fromHome.initialState
 }
 
-export const reducer = combineReducers<State>({
+export const reducer = combineReducers({
   todos: fromHome.reducer
 });

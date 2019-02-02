@@ -12,36 +12,35 @@ interface State {
 
 class AddTodoForm extends React.Component<Props, State> {
   constructor(props: Props) {
-    super(props)
-    this.state = { value: '' } // Value is empty by default
-    this.updateValue = this.updateValue.bind(this)
-    this.handleSubmit = this.handleSubmit.bind(this)
+    super(props);
+    this.state = { value: '' }; // Value is empty by default
+    this.updateValue = this.updateValue.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   public render() {
-    const { value } = this.state
-    const { updateValue, handleSubmit } = this
+    const { value } = this.state;
+    const { updateValue, handleSubmit } = this;
     return (
       <form onSubmit={handleSubmit}>
-        <input type="text" value={value} onChange={e => updateValue(e.target.value)} />
+        <input type="text" value={value} onChange={updateValue} />
         <button type="submit">Add todo !</button>
       </form>
     )
   }
 
-  private updateValue(value: string) {
-    this.setState({ value })
+  private updateValue(e: any) {
+    this.setState({ value: e.target.value });
   }
 
   private handleSubmit(e: FormEvent<any>) {
-    e.preventDefault()
+    e.preventDefault();
     if (!this.state.value.trim()) {
-      return
+      return;
     }
 
     this.props.handleSubmit(this.state.value)
-    this.setState({ value: '' })
-
+    this.setState({ value: '' });
   }
 }
 
