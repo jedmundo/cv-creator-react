@@ -10,7 +10,7 @@ import './Home.scss';
 
 interface Props {
   todos: TodoItem[],
-  onTodoDeleted: (todoId: number) => void
+  handleDeleteTodo: (todoId: number) => void
 }
 
 const mapStateToProps = (state: State) => ({
@@ -18,24 +18,13 @@ const mapStateToProps = (state: State) => ({
 })
 
 const mapDispatchToProps = {
-  onTodoDeleted: deleteTodo
+  handleDeleteTodo: deleteTodo
 }
 
 class Home extends React.Component<Props, State> {
-  public input: any;
 
-  public createTodo = (event: any) => {
-    event.preventDefault()
-    // if (!input.value.trim()) {
-    //   return
-    // }
-    // dispatch(addTodo(input.value))
-    // input.value = ''
-    // this.props.createTodo();
-  }
-
-  public deleteTodo = () => {
-    console.log('TOGGLE');
+  public deleteTodo = (id: number) => {
+    this.props.handleDeleteTodo(id);
   }
 
   public render() {
@@ -46,12 +35,12 @@ class Home extends React.Component<Props, State> {
         <AddTodoForm />
         <ul>
           {
-            todos.map(todo => (
-              <li key={todo.id}
-                onClick={this.deleteTodo}>
+            todos.map((todo) => (
+              <li key={todo.id}>
                 {todo.text}
-              </li>)
-            )
+                <button onClick={this.deleteTodo.bind(this, todo.id)}>Delete</button>
+              </li>
+            ))
           }
         </ul>
       </div>
