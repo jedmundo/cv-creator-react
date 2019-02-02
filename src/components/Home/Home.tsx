@@ -1,45 +1,59 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 
-import { GetLinkInDataAction } from '../../actions/login.actions';
+import { deleteTodo } from '../../actions/home.actions';
+import { State } from '../../reducers/index';
+import { getTodosList } from '../../selectors/todos';
 import './Home.scss';
+import Todo from './Todo';
+import { TodoItem } from '../../models/todo-item';
 
 interface Props {
-  doAction: () => any;
-};
+  todos: TodoItem[],
+  onTodoDeleted: (todoId: number) => void
+}
 
-const mapStateToProps = (state: any) => ({
-  ...state
+const mapStateToProps = (state: State) => ({
+  todos: getTodosList(state)
 })
 
-const mapDispatchToProps = (dispatch: any) => ({
-  doAction: () => dispatch(GetLinkInDataAction())
-})
+const mapDispatchToProps = {
+  onTodoDeleted: deleteTodo
+}
 
-class Home extends React.Component<Props> {
+class Home extends React.Component<Props, State> {
+  public input: any;
 
-  public simpleAction = () => {
-    this.props.doAction();
+  public createTodo = (event: any) => {
+    event.preventDefault()
+    // if (!input.value.trim()) {
+    //   return
+    // }
+    // dispatch(addTodo(input.value))
+    // input.value = ''
+    // this.props.createTodo();
+  }
+
+  public deleteTodo = () => {
+    console.log('TOGGLE', id);
   }
 
   public render() {
+    const { todos, onTodoDeleted } = this.props
     return (
-      <div className="App">
-        <header className="App-header">
-          <h1 className="App-title">CV creator</h1>
-        </header>
-        <p className="App-intro">
-          Letsa goooo!
-        </p>
-        <button onClick={this.simpleAction}>Test redux action</button>
-        <pre>
-          {
-            JSON.stringify(this.props)
-          }
-        </pre>
-      </div>
+      <ul>
+        {
+          todos.map(todo => (
+            <li key={todo.id}
+              onClick={this.deleteTodo}
+              style={{ textDecoration: `${todo.done ? 'line-through' : ''}`, cursor: 'pointer' }}>
+              {todo.name}
+            </li>)
+          )
+        }
+      </ul>
     );
   }
 }
 
-export default connect<Props>(mapStateToProps, mapDispatchToProps)(Home);
+export default connect<any,any,any>(mapStateToProps, mapDispatchToProps)(Home);

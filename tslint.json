@@ -9,6 +9,8 @@
   },
   "rules": {
     "interface-name": [true, "never-prefix"],
-    "jsx-boolean-value": false
+    "jsx-boolean-value": false,
+    "no-console": false,
+    "object-literal-sort-keys": false
   }
 }
