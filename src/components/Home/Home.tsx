@@ -2,11 +2,11 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 
 import { deleteTodo } from '../../actions/home.actions';
+import { TodoItem } from '../../models/todo-item';
 import { State } from '../../reducers/index';
 import { getTodosList } from '../../selectors/todos';
+import AddTodoForm from './AddTodoForm';
 import './Home.scss';
-import Todo from './Todo';
-import { TodoItem } from '../../models/todo-item';
 
 interface Props {
   todos: TodoItem[],
@@ -35,25 +35,28 @@ class Home extends React.Component<Props, State> {
   }
 
   public deleteTodo = () => {
-    console.log('TOGGLE', id);
+    console.log('TOGGLE');
   }
 
   public render() {
-    const { todos, onTodoDeleted } = this.props
+    const { todos } = this.props
     return (
-      <ul>
-        {
-          todos.map(todo => (
-            <li key={todo.id}
-              onClick={this.deleteTodo}
-              style={{ textDecoration: `${todo.done ? 'line-through' : ''}`, cursor: 'pointer' }}>
-              {todo.name}
-            </li>)
-          )
-        }
-      </ul>
+      <div>
+        <h1>Todos</h1>
+        <AddTodoForm />
+        <ul>
+          {
+            todos.map(todo => (
+              <li key={todo.id}
+                onClick={this.deleteTodo}>
+                {todo.text}
+              </li>)
+            )
+          }
+        </ul>
+      </div>
     );
   }
 }
 
-export default connect<any,any,any>(mapStateToProps, mapDispatchToProps)(Home);
+export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(Home);
