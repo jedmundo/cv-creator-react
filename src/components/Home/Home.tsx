@@ -1,45 +1,51 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 
-import { GetLinkInDataAction } from '../../actions/login.actions';
+import { deleteTodo } from '../../actions/home.actions';
+import { TodoItem } from '../../models/todo-item';
+import { State } from '../../reducers/index';
+import { getTodosList } from '../../selectors/todos';
+import AddTodoForm from './AddTodoForm';
 import './Home.scss';
 
 interface Props {
-  doAction: () => any;
-};
+  todos: TodoItem[],
+  handleDeleteTodo: (todoId: number) => void
+}
 
-const mapStateToProps = (state: any) => ({
-  ...state
+const mapStateToProps = (state: State) => ({
+  todos: getTodosList(state)
 })
 
-const mapDispatchToProps = (dispatch: any) => ({
-  doAction: () => dispatch(GetLinkInDataAction())
-})
+const mapDispatchToProps = {
+  handleDeleteTodo: deleteTodo
+}
 
-class Home extends React.Component<Props> {
+class Home extends React.Component<Props, State> {
 
-  public simpleAction = () => {
-    this.props.doAction();
+  public deleteTodo = (id: number) => {
+    this.props.handleDeleteTodo(id);
   }
 
   public render() {
+    const { todos } = this.props
     return (
-      <div className="App">
-        <header className="App-header">
-          <h1 className="App-title">CV creator</h1>
-        </header>
-        <p className="App-intro">
-          Letsa goooo!
-        </p>
-        <button onClick={this.simpleAction}>Test redux action</button>
-        <pre>
+      <div>
+        <h1>Todos</h1>
+        <AddTodoForm />
+        <ul>
           {
-            JSON.stringify(this.props)
+            todos.map((todo) => (
+              <li key={todo.id}>
+                {todo.text}
+                <button onClick={this.deleteTodo.bind(this, todo.id)}>Delete</button>
+              </li>
+            ))
           }
-        </pre>
+        </ul>
       </div>
     );
   }
 }
 
-export default connect<Props>(mapStateToProps, mapDispatchToProps)(Home);
+export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(Home);

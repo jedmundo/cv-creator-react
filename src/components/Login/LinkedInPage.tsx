@@ -1,7 +1,6 @@
+// import * as React from 'react';
 // import { Component } from 'react';
-
 // export class LinkedIn extends Component {
-
 
 //   public componentWillUnmount() {
 //     window.removeEventListener('message', this.receiveMessage, false);
@@ -31,7 +30,7 @@
 //     }
 //   };
 
-//   public handleConnectLinkedInClick = (e: MouseEvent) => {
+//   public handleConnectLinkedInClick = (e: any) => {
 //     if (e) {
 //       e.preventDefault();
 //     }
