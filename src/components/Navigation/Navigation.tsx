@@ -1,10 +1,11 @@
 
 import * as React from 'react';
+import { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { ROUTES } from '../../constants/routes.constants';
 import './Navigation.scss';
 
-class Navigation extends React.Component {
+class Navigation extends Component {
 
   public render() {
     return (

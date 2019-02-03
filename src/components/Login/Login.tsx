@@ -1,8 +1,6 @@
 import * as React from 'react';
 import { Component } from 'react';
 
-// import { LinkedIn } from 'react-linkedin-login-oauth2';
-
 class LoginPage extends Component {
   public state = {
     code: '',

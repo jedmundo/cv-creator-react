@@ -1,10 +1,11 @@
 import * as React from 'react';
+import { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { deleteTodo } from '../../actions/home.actions';
 import { TodoItem } from '../../models/todo-item';
 import { State } from '../../reducers/index';
-import { getTodosList } from '../../selectors/todos';
+import { getTodosList } from '../../selectors/todos.selectors';
 import AddTodoForm from './AddTodoForm';
 import './Home.scss';
 
@@ -21,7 +22,7 @@ const mapDispatchToProps = {
   handleDeleteTodo: deleteTodo
 }
 
-class Home extends React.Component<Props, State> {
+class Home extends Component<Props, State> {
 
   public deleteTodo = (id: number) => {
     this.props.handleDeleteTodo(id);
