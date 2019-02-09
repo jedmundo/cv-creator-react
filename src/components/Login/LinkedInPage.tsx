@@ -1,7 +1,18 @@
 import * as React from 'react';
 import { Component } from 'react';
+import { LinkedInAuth } from '../../models/linkedin-oauth';
+interface Props {
+  redirectUri: string;
+  clientId: string;
+  onFailure: (data: any) => void;
+  onSuccess: (data: LinkedInAuth) => void;
+  state?: string;
+  scope?: any;
+}
 
-export class LinkedIn extends Component {
+export class LinkedIn extends Component<Props> {
+
+  public popup: Window | null;
 
   public componentWillUnmount() {
     window.removeEventListener('message', this.receiveMessage, false);
@@ -18,29 +29,29 @@ export class LinkedIn extends Component {
     return linkedInAuthenLink;
   }
 
-  public receiveMessage = (event) => {
-    if (event.origin === window.location.origin) {
-      console.log('event data:', event.data);
-      if (event.data.errorMessage && event.data.from === 'Linked In') {
-        this.props.onFailure(event.data);
-        this.popup && this.popup.close();
-      } else if (event.data.code && event.data.from === 'Linked In') {
-        this.props.onSuccess({ code: event.data.code });
-        this.popup && this.popup.close();
+  public receiveMessage = (event: any) => {
+    if (event.origin === window.location.origin && this.popup) {
+      if (event.data.from === 'Linked In') {
+        console.log('event data:', event.data);
+        if (event.data.errorMessage) {
+          this.props.onFailure(event.data);
+          this.popup.close();
+        } else if (event.data.code) {
+          this.props.onSuccess({ code: event.data.code });
+          this.popup.close();
+        }
       }
     }
   };
 
-  public handleConnectLinkedInClick = (e: any) => {
-    if (e) {
-      e.preventDefault();
+  public handleConnectLinkedInClick = (event: any) => {
+    if (event) {
+      event.preventDefault();
     }
-    this.props.onClick && this.props.onClick();
     this.popup = window.open(this.getUrl(), '_blank', 'width=600,height=600');
     window.removeEventListener('message', this.receiveMessage, false);
     window.addEventListener('message', this.receiveMessage, false);
   }
-
 
   public render() {
     return (
@@ -48,7 +59,7 @@ export class LinkedIn extends Component {
         type="button"
         onClick={this.handleConnectLinkedInClick}
       >
-        <img src={require('../../assets/linkedin_logo.png')} alt="Log in with Linked In" style={{ maxWidth: '180px' }} />
+        <img src={require('../../assets/linkedin_logo.png')} alt="Log in with Linked In" style={{ maxWidth: '50px' }} />
       </button>
     );
   }
