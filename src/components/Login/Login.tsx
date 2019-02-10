@@ -1,8 +1,11 @@
+import axios from 'axios';
 import * as React from 'react';
 import { Component } from 'react';
+import { ROUTES } from '../../constants/routes.constants';
 import { LinkedInAuth } from '../../models/linkedin-oauth';
 import { LinkedIn } from './LinkedInPage';
 
+const CLIENT_ID = '8697fgt86y55wy';
 class LoginPage extends Component {
 
   public state = {
@@ -15,6 +18,8 @@ class LoginPage extends Component {
       code: data.code,
       errorMessage: '',
     });
+
+    this.exchangeToken(data.code);
   }
 
   public handleFailure = (error: any) => {
@@ -29,9 +34,10 @@ class LoginPage extends Component {
     return (
       <div>
         <LinkedIn
-          clientId="8697fgt86y55wy"
+          clientId={CLIENT_ID}
           onFailure={this.handleFailure}
           onSuccess={this.handleSuccess}
+          scope="r_basicprofile r_ad_campaigns rw_organization r_emailaddress"
           redirectUri="http://localhost:3000/login-popup"
         >
           Log in with Linked in
@@ -41,6 +47,30 @@ class LoginPage extends Component {
         {errorMessage && <div>{errorMessage}</div>}
       </div>
     );
+  }
+
+  private exchangeToken(code: string): void {
+    axios.request({
+      url: "/v1.0.0/auth/token",
+      method: "post",
+      baseURL: "http://localhost:4040",
+      data: {
+        code,
+        redirect_uri: `${window.location.origin}${ROUTES.LOGIN_POPUP}`
+      }
+    }).then((res: any) => {
+      const token = res.data.access_token;
+      console.log(token);
+
+      axios.get('http://localhost:4040/v1.0.0/info/profile', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
+        .then((info: any) => {
+          console.log('INFO', info);
+        });
+    });
   }
 }
 
